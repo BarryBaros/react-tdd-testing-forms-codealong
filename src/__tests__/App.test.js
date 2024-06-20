@@ -36,10 +36,53 @@ test("checkbox appears as unchecked when user clicks a second time", () => {
   expect(addPepperoni).not.toBeChecked();
 });
 
-// Size select element
+test("selecting options updates the 'Your selection' message", () => {
+  render(<App />);
 
-// "Your Selection" text
+  const addPepperoni = screen.getByRole("checkbox", { name: /add pepperoni/i });
+  const selectSize = screen.getByLabelText(/select size/i);
 
-// "Contact Info" text box
+  userEvent.click(addPepperoni);
 
-// Submit Order button
+  expect(screen.getByText(/small pepperoni/i)).toBeInTheDocument();
+
+  userEvent.selectOptions(selectSize, "large");
+
+  expect(screen.getByText(/large pepperoni/i)).toBeInTheDocument();
+});
+
+test("select Size dropdown displays the user's selected value", () => {
+  render(<App />);
+
+  const selectSize = screen.getByLabelText(/select size/i);
+
+  userEvent.selectOptions(selectSize, "medium");
+
+  expect(selectSize).toHaveDisplayValue("Medium");
+
+  userEvent.selectOptions(selectSize, "large");
+
+  expect(selectSize).toHaveDisplayValue("Large");
+});
+
+test("'Your Selection' message initially displays 'small cheese'", () => {
+  render(<App />);
+
+  expect(screen.getByText(/small cheese/i)).toBeInTheDocument();
+});
+
+test("selecting options updates the 'Your selection' message", () => {
+  render(<App />);
+
+  const addPepperoni = screen.getByRole("checkbox", { name: /add pepperoni/i });
+  const selectSize = screen.getByLabelText(/select size/i);
+
+  userEvent.click(addPepperoni);
+
+  expect(screen.getByText(/small pepperoni/i)).toBeInTheDocument();
+
+  userEvent.selectOptions(selectSize, "large");
+
+  expect(screen.getByText(/large pepperoni/i)).toBeInTheDocument();
+});
+
